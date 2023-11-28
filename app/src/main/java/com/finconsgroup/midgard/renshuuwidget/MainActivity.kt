@@ -17,6 +17,9 @@ import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -25,9 +28,12 @@ import com.finconsgroup.midgard.renshuuwidget.ui.theme.RenshuuWidgetTheme
 import com.google.gson.Gson
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : ComponentActivity() {
+
+    private val workManager = WorkManager.getInstance(applicationContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +54,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        workManager.enqueueUniquePeriodicWork(
+            "widget refresh",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            PeriodicWorkRequest
+                .Builder(MyWorker::class.java, 30L, TimeUnit.MINUTES)
+                .build()
+        )
+
         MainScope().launch {
             GlanceAppWidgetManager(this@MainActivity).getGlanceIds(WidgetSmallRow::class.java)
                 .forEach { id ->
