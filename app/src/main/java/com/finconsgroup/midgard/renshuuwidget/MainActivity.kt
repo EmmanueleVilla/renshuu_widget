@@ -33,8 +33,6 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
 
-    private val workManager = WorkManager.getInstance(applicationContext)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -54,6 +52,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        val workManager = WorkManager.getInstance(applicationContext)
 
         workManager.enqueueUniquePeriodicWork(
             "widget refresh",
