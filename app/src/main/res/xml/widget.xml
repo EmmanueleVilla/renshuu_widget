@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:description="@string/app_name"
+    android:initialLayout="@layout/layout_widget_initial"
+    android:maxResizeWidth="120dp"
+    android:maxResizeHeight="40dp"
+    android:minWidth="120dp"
+    android:minHeight="40dp"
+    android:minResizeWidth="120dp"
+    android:minResizeHeight="40dp"
+    android:resizeMode="vertical|horizontal"
+    android:targetCellWidth="3"
+    android:targetCellHeight="1"
+    android:widgetCategory="home_screen"
+    tools:ignore="UnusedAttribute" />
