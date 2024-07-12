@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -42,9 +43,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column {
-                        Text(text = "Hello World!")
-                    }
+                    MainComponent()
                 }
             }
         }
@@ -69,9 +68,9 @@ class MainActivity : ComponentActivity() {
                     refreshWidget(this@MainActivity, id)
                 }
         }
-        val browserIntent =
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://www.renshuu.org/index.php?page=user/me"))
-        startActivity(browserIntent)
+        //val browserIntent =
+            //Intent(Intent.ACTION_VIEW, Uri.parse("https://www.renshuu.org/me/"))
+        //startActivity(browserIntent)
     }
 }
 
@@ -85,62 +84,27 @@ data class Entry(
 
 fun refreshWidget(context: Context, glanceId: GlanceId) {
     MainScope().launch {
-        val queue: RequestQueue = Volley.newRequestQueue(context)
-
-        val url = "https://www.renshuu.org/me/"
-
-        val stringRequest = object : StringRequest(
-            Method.GET, url,
-            Response.Listener { response ->
-                val list = mutableListOf<Entry>()
-                val doc = org.jsoup.Jsoup.parse(response)
-                doc.getElementById("dash_schedbox2")?.html()?.let { html ->
-                    html.split("<div id=\"sched_box_").forEach {
-                        try {
-                            org.jsoup.Jsoup.parse(it).apply {
-                                getElementsByClass("hsched_button").first()?.text()?.let { text ->
-                                    val toLearn = it.split("</span> to learn").firstOrNull()
-                                        ?.substringAfterLast(">")?.toIntOrNull() ?: 0
-                                    val toReview = it.split("</span> to review").firstOrNull()
-                                        ?.substringAfterLast(">")?.toIntOrNull() ?: 0
-                                    list.add(
-                                        Entry(
-                                            title = text,
-                                            toLearn = toLearn,
-                                            toReview = toReview
-                                        )
-                                    )
+        val list = mutableListOf<Entry>()
+        val prefs = context.getSharedPreferences("RWPrefs", Context.MODE_PRIVATE)
+        prefs.getString("api_key", null)?.let {
+            fetchUserData(context, it) { user ->
+                if (user != null) {
+                    user.
+                    MainScope().launch {
+                        updateAppWidgetState(
+                            context = context,
+                            definition = PreferencesGlanceStateDefinition,
+                            glanceId = glanceId
+                        ) { preferences ->
+                            preferences.toMutablePreferences()
+                                .apply {
+                                    this[widgetKey] = Gson().toJson(list)
                                 }
-                            }
-                        } catch (e: Exception) {
-                            println("Error: ${e.message}")
                         }
+                        WidgetSmallRow().update(context, glanceId)
                     }
                 }
-                MainScope().launch {
-                    updateAppWidgetState(
-                        context = context,
-                        definition = PreferencesGlanceStateDefinition,
-                        glanceId = glanceId
-                    ) { preferences ->
-                        preferences.toMutablePreferences()
-                            .apply {
-                                this[widgetKey] = Gson().toJson(list)
-                            }
-                    }
-                    WidgetSmallRow().update(context, glanceId)
-                }
-            },
-            Response.ErrorListener { error ->
-                println("Errore: ${error.message}")
-            }) {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Cookie"] = "PHPSESSID=vra9j01cljpjrvn11vm9bc117q"
-                return headers
             }
         }
-
-        queue.add(stringRequest)
     }
 }

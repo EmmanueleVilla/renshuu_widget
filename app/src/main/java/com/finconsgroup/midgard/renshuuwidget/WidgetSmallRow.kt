@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
+import androidx.glance.Button
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.action.actionStartActivity
@@ -48,12 +49,12 @@ class WidgetSmallRow : GlanceAppWidget() {
     }
 
     @Composable
-    fun Report(json: String) {
-        val deserialized: List<Entry> = Gson().fromJson(json, Array<Entry>::class.java).toList()
+    fun Report(json: String?) {
+        val deserialized: List<Entry> =
+            if (json != null) Gson().fromJson(json, Array<Entry>::class.java).toList() else listOf()
         LazyColumn(
             modifier = GlanceModifier
                 .fillMaxSize()
-                .clickable(onClick = actionStartActivity(MainActivity::class.java))
                 .background(Color.Gray),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -63,7 +64,7 @@ class WidgetSmallRow : GlanceAppWidget() {
                     modifier = GlanceModifier
                         .fillMaxWidth()
                         .padding(2.dp)
-                        .clickable(onClick = actionStartActivity(MainActivity::class.java)),
+                        .clickable(actionStartActivity(MainActivity::class.java)),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(text = value.title, style = TextStyle(fontWeight = FontWeight.Bold))
