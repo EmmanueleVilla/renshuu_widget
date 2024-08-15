@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
             "widget refresh",
             ExistingPeriodicWorkPolicy.REPLACE,
             PeriodicWorkRequest
-                .Builder(MyWorker::class.java, 30L, TimeUnit.MINUTES)
+                .Builder(MyWorker::class.java, 15L, TimeUnit.MINUTES)
                 .build()
         )
 
@@ -87,9 +87,9 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
         val list = mutableListOf<Entry>()
         val prefs = context.getSharedPreferences("RWPrefs", Context.MODE_PRIVATE)
         prefs.getString("api_key", null)?.let {
-            fetchUserData(context, it) { user ->
-                if (user != null) {
-                    user.
+            fetchSchedule(context, it) {
+                if (it != null) {
+                    Log.e("VECNA", Gson().toJson(it))
                     MainScope().launch {
                         updateAppWidgetState(
                             context = context,

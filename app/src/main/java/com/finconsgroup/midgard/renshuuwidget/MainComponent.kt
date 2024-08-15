@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,6 +38,32 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 
 const val URL = "https://api.renshuu.org/v1/profile"
+
+fun fetchSchedule(context:Context, token: String, callback: (ScheduleData?) -> Unit) {
+    val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+
+    val jsonObjectRequest = object : JsonObjectRequest(
+        Method.GET, URL, null,
+        Response.Listener { response ->
+            val gson = Gson()
+            val data: ScheduleData = gson.fromJson(response.toString(), ScheduleData::class.java)
+            callback(data)
+        },
+        Response.ErrorListener { error ->
+            error.printStackTrace()
+            callback(null)
+        }
+    ) {
+        override fun getHeaders(): MutableMap<String, String> {
+            val headers = HashMap<String, String>()
+            headers["Authorization"] = "Bearer $token"
+            Log.e("BEARER",  "Bearer $token")
+            return headers
+        }
+    }
+
+    requestQueue.add(jsonObjectRequest)
+}
 
 fun fetchUserData(context: Context, token: String, callback: (User?) -> Unit) {
     val requestQueue: RequestQueue = Volley.newRequestQueue(context)
@@ -78,9 +106,9 @@ fun MainComponent() {
 
     LaunchedEffect(Unit) {
         prefs.getString("api_key", null)?.let {
-            fetchUserData(context, it) { user ->
-                message = if (user != null) {
-                    "User Data: $user"
+            fetchSchedule(context, it) { data ->
+                message = if (data != null) {
+                    "User Data: $data"
                 } else {
                     "Failed to fetch user data"
                 }
@@ -96,7 +124,8 @@ fun MainComponent() {
         Column(
             Modifier
                 .padding(it)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

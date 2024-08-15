@@ -54,3 +54,45 @@ data class Streak(
     val days_studied_in_a_row: Int,
     val days_studied_in_a_row_alltime: Int
 )
+
+data class ScheduleData(
+    val schedules: List<Schedule>,
+    val api_usage: ApiUsage
+)
+
+data class Schedule(
+    val id: String,
+    val name: String,
+    val is_frozen: Int,
+    val today: Today,
+    val upcoming: List<Upcoming>,
+    val terms: Terms,
+    val new_terms: NewTerms
+)
+
+data class Today(
+    val review: Int,
+    val new: Int
+)
+
+data class Upcoming(
+    val days_in_future: String,
+    val terms_to_review: String
+)
+
+data class Terms(
+    val total_count: Int,
+    val studied_count: Int,
+    val unstudied_count: Int,
+    val hidden_count: Int
+)
+
+data class NewTerms(
+    val today_count: Int,
+    val rolling_week_count: Int
+)
+
+data class ApiUsage(
+    val calls_today: Int,
+    val daily_allowance: Int
+)
