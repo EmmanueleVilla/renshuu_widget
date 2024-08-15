@@ -68,26 +68,16 @@ class MainActivity : ComponentActivity() {
                     refreshWidget(this@MainActivity, id)
                 }
         }
-        //val browserIntent =
-            //Intent(Intent.ACTION_VIEW, Uri.parse("https://www.renshuu.org/me/"))
-        //startActivity(browserIntent)
     }
 }
 
 internal val widgetKey = stringPreferencesKey("widget-key")
 
-data class Entry(
-    val title: String,
-    val toLearn: Int,
-    val toReview: Int
-)
-
 fun refreshWidget(context: Context, glanceId: GlanceId) {
     MainScope().launch {
-        val list = mutableListOf<Entry>()
         val prefs = context.getSharedPreferences("RWPrefs", Context.MODE_PRIVATE)
-        prefs.getString("api_key", null)?.let {
-            fetchSchedule(context, it) {
+        prefs.getString("api_key", null)?.let { key ->
+            fetchSchedule(context, key) {
                 if (it != null) {
                     Log.e("VECNA", Gson().toJson(it))
                     MainScope().launch {
@@ -98,7 +88,7 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
                         ) { preferences ->
                             preferences.toMutablePreferences()
                                 .apply {
-                                    this[widgetKey] = Gson().toJson(list)
+                                    this[widgetKey] = Gson().toJson(it)
                                 }
                         }
                         WidgetSmallRow().update(context, glanceId)

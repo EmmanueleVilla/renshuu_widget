@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
-import androidx.glance.Button
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.action.actionStartActivity
@@ -50,29 +49,28 @@ class WidgetSmallRow : GlanceAppWidget() {
 
     @Composable
     fun Report(json: String?) {
-        val deserialized: List<Entry> =
-            if (json != null) Gson().fromJson(json, Array<Entry>::class.java).toList() else listOf()
+        val deserialized = Gson().fromJson(json, ScheduleData::class.java)
         LazyColumn(
             modifier = GlanceModifier
                 .fillMaxSize()
                 .background(Color.Gray),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            items(deserialized.size) {
-                val value = deserialized[it]
+            items(deserialized.schedules.size) {
+                val value = deserialized.schedules[it]
                 Column(
                     modifier = GlanceModifier
                         .fillMaxWidth()
                         .padding(2.dp)
-                        .clickable(actionStartActivity(MainActivity::class.java)),
+                        .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(text = value.title, style = TextStyle(fontWeight = FontWeight.Bold))
+                    Text(text = value.name, style = TextStyle(fontWeight = FontWeight.Bold))
                     Text(
-                        text = "Learn: ${value.toLearn} - Review: ${value.toReview}",
+                        text = "Learn: ${value.today.new} - Review: ${value.today.review}",
                         style = TextStyle(fontStyle = FontStyle.Italic)
                     )
-                    if (it < deserialized.size - 1) {
+                    if (it < deserialized.schedules.size - 1) {
                         Row(
                             GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
                                 .background(Color.DarkGray)
