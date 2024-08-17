@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
 
         workManager.enqueueUniquePeriodicWork(
             "widget refresh",
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             PeriodicWorkRequest
                 .Builder(MyWorker::class.java, 15L, TimeUnit.MINUTES)
                 .build()
