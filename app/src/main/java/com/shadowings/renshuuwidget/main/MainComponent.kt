@@ -121,19 +121,27 @@ fun MainComponent() {
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = "Set your api key",
+                text = "Setup",
                 style = MaterialTheme.typography.headlineMedium
             )
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = "API Key can be found under the experimental panel of renshuu's settings (tap menu, then the settings icon, then search for \"api\")"
+                text = "Renshuu Widget is a companion app to renshuu.org, a language learning platform. It allows you to see your dashboard progress on your home screen."
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "To function, this app needs an API key from renshuu.org"
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "The API Key can be found under the experimental panel of renshuu's settings (tap menu, then the settings icon, then search for \"api\")"
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "After the setup, the app will fetch your dashboard data every 15 minutes!"
             )
             val keyBeginning = key.value?.substring(0, 6) ?: ""
             val keyEnd = key.value?.substring(key.value?.length?.minus(6) ?: 0) ?: ""
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                text = "Current key: $keyBeginning...$keyEnd"
-            )
 
             TextField(
                 modifier = Modifier
@@ -143,6 +151,10 @@ fun MainComponent() {
                 onValueChange = { text = it },
                 label = { Text("API Key") },
                 singleLine = true
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "Current key: $keyBeginning...$keyEnd"
             )
             Button(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -160,6 +172,15 @@ fun MainComponent() {
                     text = "SAVE"
                 )
             }
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = "The widget is not updating? You may need to exclude the app from battery optimization or enable autostart." +
+                        "\n\nCheck the following app's settings:" +
+                        "\n1. Settings->Battery & perfomance -> App battery saver -> Select Renshuu Widget -> No restrictions\n" +
+                        "2. Settings -> Apps -> Permissions -> Autostart -> Add Renshuu Widget to autostart"
+
+            )
+
             AnimatedVisibility(visible = loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.width(64.dp),
