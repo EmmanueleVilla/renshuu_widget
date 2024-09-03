@@ -1,4 +1,4 @@
-package com.finconsgroup.midgard.renshuuwidget.ui.theme
+package com.shadowings.renshuuwidget.ui.theme
 
 import android.app.Activity
 import android.os.Build

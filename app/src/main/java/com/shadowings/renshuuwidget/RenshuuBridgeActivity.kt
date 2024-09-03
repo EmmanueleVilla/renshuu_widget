@@ -1,4 +1,4 @@
-package com.finconsgroup.midgard.renshuuwidget
+package com.shadowings.renshuuwidget
 
 import android.content.Intent
 import android.net.Uri

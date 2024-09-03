@@ -1,4 +1,4 @@
-package com.finconsgroup.midgard.renshuuwidget
+package com.shadowings.renshuuwidget
 
 import android.content.Context
 import androidx.glance.appwidget.GlanceAppWidgetManager

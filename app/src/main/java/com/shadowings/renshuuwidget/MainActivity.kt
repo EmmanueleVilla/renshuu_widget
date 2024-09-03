@@ -1,17 +1,13 @@
-package com.finconsgroup.midgard.renshuuwidget
+package com.shadowings.renshuuwidget
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
@@ -21,11 +17,7 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.finconsgroup.midgard.renshuuwidget.ui.theme.RenshuuWidgetTheme
+import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetTheme
 import com.google.gson.Gson
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

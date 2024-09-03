@@ -27,11 +27,11 @@
         </activity>
 
         <receiver
-            android:name="com.finconsgroup.midgard.renshuuwidget.UpdateWidgetReceiver"
+            android:name="com.shadowings.renshuuwidget.UpdateWidgetReceiver"
             android:exported="false" />
 
         <receiver
-            android:name="com.finconsgroup.midgard.renshuuwidget.WidgetSmallRowReceiver"
+            android:name="com.shadowings.renshuuwidget.WidgetSmallRowReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

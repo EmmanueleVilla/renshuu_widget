@@ -1,4 +1,4 @@
-package com.finconsgroup.midgard.renshuuwidget
+package com.shadowings.midgard.renshuuwidget
 
 import org.junit.Test
 

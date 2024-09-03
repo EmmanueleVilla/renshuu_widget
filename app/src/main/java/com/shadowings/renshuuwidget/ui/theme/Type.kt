@@ -1,4 +1,4 @@
-package com.finconsgroup.midgard.renshuuwidget.ui.theme
+package com.shadowings.renshuuwidget.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

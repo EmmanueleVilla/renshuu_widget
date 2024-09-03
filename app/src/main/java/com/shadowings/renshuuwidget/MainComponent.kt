@@ -1,4 +1,4 @@
-package com.finconsgroup.midgard.renshuuwidget
+package com.shadowings.renshuuwidget
 
 import android.content.Context
 import android.util.Log
@@ -39,8 +39,8 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.shadowings.renshuuwidget.models.ScheduleData
 import java.util.Date
-import kotlin.random.Random
 
 const val URL = "https://api.renshuu.org/v1/schedule"
 
