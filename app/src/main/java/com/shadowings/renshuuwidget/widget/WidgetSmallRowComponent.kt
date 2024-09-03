@@ -42,43 +42,43 @@ class WidgetSmallRowComponent : GlanceAppWidget() {
             ContentComponent()
         }
     }
+}
 
-    @Composable
-    fun ContentComponent() {
-        val prefs = currentState<Preferences>()
-        val json = prefs[widgetKey] ?: ""
-        ReportComponent(json)
-    }
+@Composable
+fun ContentComponent() {
+    val prefs = currentState<Preferences>()
+    val json = prefs[widgetKey] ?: ""
+    ReportComponent(json)
+}
 
-    @Composable
-    fun ReportComponent(json: String?) {
-        val deserialized = Gson().fromJson(json, ScheduleData::class.java)
-        LazyColumn(
-            modifier = GlanceModifier
-                .fillMaxSize()
-                .background(Color.Gray),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            items(deserialized.schedules.size) {
-                val value = deserialized.schedules[it]
-                Column(
-                    modifier = GlanceModifier
-                        .fillMaxWidth()
-                        .padding(2.dp)
-                        .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(text = value.name, style = TextStyle(fontWeight = FontWeight.Bold))
-                    Text(
-                        text = "Learn: ${value.today.new} - Review: ${value.today.review}",
-                        style = TextStyle(fontStyle = FontStyle.Italic)
-                    )
-                    if (it < deserialized.schedules.size - 1) {
-                        Row(
-                            GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
-                                .background(Color.DarkGray)
-                        ) {}
-                    }
+@Composable
+fun ReportComponent(json: String?) {
+    val deserialized = Gson().fromJson(json, ScheduleData::class.java)
+    LazyColumn(
+        modifier = GlanceModifier
+            .fillMaxSize()
+            .background(Color.Gray),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        items(deserialized.schedules.size) {
+            val value = deserialized.schedules[it]
+            Column(
+                modifier = GlanceModifier
+                    .fillMaxWidth()
+                    .padding(2.dp)
+                    .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(text = value.name, style = TextStyle(fontWeight = FontWeight.Bold))
+                Text(
+                    text = "Learn: ${value.today.new} - Review: ${value.today.review}",
+                    style = TextStyle(fontStyle = FontStyle.Italic)
+                )
+                if (it < deserialized.schedules.size - 1) {
+                    Row(
+                        GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
+                            .background(Color.DarkGray)
+                    ) {}
                 }
             }
         }

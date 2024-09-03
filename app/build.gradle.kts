@@ -93,4 +93,5 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.code.gson:gson:2.10.1")
+    detektPlugins("ru.kode:detekt-rules-compose:1.4.0")
 }

@@ -44,6 +44,7 @@ import com.shadowings.renshuuwidget.R
 import com.shadowings.renshuuwidget.models.ScheduleData
 import com.shadowings.renshuuwidget.ui.theme.GrammarColor
 import com.shadowings.renshuuwidget.ui.theme.KanjiColor
+import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 import com.shadowings.renshuuwidget.ui.theme.VocabularyColor
 import java.util.Date
 
@@ -76,8 +77,15 @@ fun fetchSchedule(context: Context, token: String, callback: (ScheduleData?) -> 
     requestQueue.add(jsonObjectRequest)
 }
 
-@Composable
 @Preview
+@Composable
+private fun MainComponentPreview() {
+    RenshuuWidgetThemeComponent {
+        MainComponent()
+    }
+}
+
+@Composable
 fun MainComponent() {
     val context = LocalContext.current
     val text = rememberSaveable { mutableStateOf("") }
