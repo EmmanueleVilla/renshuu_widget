@@ -1,4 +1,4 @@
-package com.shadowings.renshuuwidget
+package com.shadowings.renshuuwidget.main
 
 import android.content.Context
 import android.os.Bundle
@@ -19,6 +19,9 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetTheme
 import com.google.gson.Gson
+import com.shadowings.renshuuwidget.widget.WidgetRefreshWorker
+import com.shadowings.renshuuwidget.widget.WidgetSmallRow
+import com.shadowings.renshuuwidget.widget.refreshWidget
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -50,7 +53,7 @@ class MainActivity : ComponentActivity() {
             "widget refresh",
             ExistingPeriodicWorkPolicy.UPDATE,
             PeriodicWorkRequest
-                .Builder(MyWorker::class.java, 15L, TimeUnit.MINUTES)
+                .Builder(WidgetRefreshWorker::class.java, 15L, TimeUnit.MINUTES)
                 .build()
         )
 
@@ -64,29 +67,3 @@ class MainActivity : ComponentActivity() {
 }
 
 internal val widgetKey = stringPreferencesKey("widget-key")
-
-fun refreshWidget(context: Context, glanceId: GlanceId) {
-    MainScope().launch {
-        val prefs = context.getSharedPreferences("RWPrefs", Context.MODE_PRIVATE)
-        prefs.getString("api_key", null)?.let { key ->
-            fetchSchedule(context, key) {
-                if (it != null) {
-                    Log.e("VECNA", Gson().toJson(it))
-                    MainScope().launch {
-                        updateAppWidgetState(
-                            context = context,
-                            definition = PreferencesGlanceStateDefinition,
-                            glanceId = glanceId
-                        ) { preferences ->
-                            preferences.toMutablePreferences()
-                                .apply {
-                                    this[widgetKey] = Gson().toJson(it)
-                                }
-                        }
-                        WidgetSmallRow().update(context, glanceId)
-                    }
-                }
-            }
-        }
-    }
-}

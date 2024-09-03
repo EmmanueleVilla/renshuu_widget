@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RenshuuWidget"
         tools:targetApi="31">
-        <activity android:name=".RenshuuBridgeActivity" />
+        <activity android:name="com.shadowings.renshuuwidget.main.RenshuuBridgeActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.shadowings.renshuuwidget.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.RenshuuWidget">
             <intent-filter>
@@ -27,11 +27,11 @@
         </activity>
 
         <receiver
-            android:name="com.shadowings.renshuuwidget.UpdateWidgetReceiver"
+            android:name="com.shadowings.renshuuwidget.widget.UpdateWidgetReceiver"
             android:exported="false" />
 
         <receiver
-            android:name="com.shadowings.renshuuwidget.WidgetSmallRowReceiver"
+            android:name="com.shadowings.renshuuwidget.widget.WidgetSmallRowReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

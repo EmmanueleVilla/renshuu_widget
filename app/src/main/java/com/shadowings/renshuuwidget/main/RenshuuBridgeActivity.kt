@@ -1,4 +1,4 @@
-package com.shadowings.renshuuwidget
+package com.shadowings.renshuuwidget.main
 
 import android.content.Intent
 import android.net.Uri

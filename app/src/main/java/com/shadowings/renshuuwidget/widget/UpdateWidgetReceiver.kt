@@ -1,4 +1,4 @@
-package com.shadowings.renshuuwidget
+package com.shadowings.renshuuwidget.widget
 
 import android.content.BroadcastReceiver
 import android.content.Context

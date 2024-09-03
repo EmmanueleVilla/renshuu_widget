@@ -1,4 +1,4 @@
-package com.shadowings.renshuuwidget
+package com.shadowings.renshuuwidget.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -28,7 +28,9 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
+import com.shadowings.renshuuwidget.main.RenshuuBridgeActivity
 import com.shadowings.renshuuwidget.models.ScheduleData
+import com.shadowings.renshuuwidget.main.widgetKey
 
 /**
  * Single row widget
