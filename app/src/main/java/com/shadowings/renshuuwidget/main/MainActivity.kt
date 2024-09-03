@@ -1,8 +1,6 @@
 package com.shadowings.renshuuwidget.main
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,15 +8,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidgetManager
-import androidx.glance.appwidget.state.updateAppWidgetState
-import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetTheme
-import com.google.gson.Gson
 import com.shadowings.renshuuwidget.widget.WidgetRefreshWorker
 import com.shadowings.renshuuwidget.widget.WidgetSmallRow
 import com.shadowings.renshuuwidget.widget.refreshWidget
@@ -38,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainComponent()
+                    mainComponent()
                 }
             }
         }
