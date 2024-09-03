@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class WidgetRefreshWorker(private val ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
     override fun doWork(): Result {
         MainScope().launch {
-            GlanceAppWidgetManager(ctx).getGlanceIds(WidgetSmallRow::class.java)
+            GlanceAppWidgetManager(ctx).getGlanceIds(WidgetSmallRowComponent::class.java)
                 .forEach { id ->
                     refreshWidget(ctx, id)
                 }

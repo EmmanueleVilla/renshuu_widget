@@ -42,6 +42,9 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.shadowings.renshuuwidget.R
 import com.shadowings.renshuuwidget.models.ScheduleData
+import com.shadowings.renshuuwidget.ui.theme.GrammarColor
+import com.shadowings.renshuuwidget.ui.theme.KanjiColor
+import com.shadowings.renshuuwidget.ui.theme.VocabularyColor
 import java.util.Date
 
 const val URL = "https://api.renshuu.org/v1/schedule"
@@ -134,6 +137,9 @@ private fun MainComponentBody(
     }
 }
 
+private const val KEY_MASK_START = 0
+private const val KEY_MASK_SIZE = 6
+
 @Composable
 private fun MainComponentBodyContent(
     key: MutableState<String?>,
@@ -146,8 +152,8 @@ private fun MainComponentBodyContent(
         mutableStateOf(false)
     }
 
-    val keyBeginning = key.value?.substring(0, 6) ?: ""
-    val keyEnd = key.value?.substring(key.value?.length?.minus(6) ?: 0) ?: ""
+    val keyBeginning = key.value?.substring(KEY_MASK_START, KEY_MASK_SIZE) ?: ""
+    val keyEnd = key.value?.substring(key.value?.length?.minus(KEY_MASK_SIZE) ?: KEY_MASK_START) ?: ""
 
     Text(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -235,9 +241,9 @@ private fun ScheduleDataComponent(schedulesData: MutableState<ScheduleData?>) {
                             .drawBehind {
                                 drawCircle(
                                     color = when (it.name.first()) {
-                                        'g', 'G' -> Color(0xff7acc18)
-                                        'k', 'K' -> Color(0xffde8117)
-                                        'w', 'W' -> Color(0xff5e5cd0)
+                                        'g', 'G' -> GrammarColor
+                                        'k', 'K' -> KanjiColor
+                                        'w', 'W' -> VocabularyColor
                                         else -> Color.LightGray
                                     },
                                     radius = this.size.maxDimension
@@ -260,7 +266,6 @@ private fun ScheduleDataComponent(schedulesData: MutableState<ScheduleData?>) {
                     )
                 }
             )
-
         }
     }
 }

@@ -8,7 +8,7 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
 class WidgetSmallRowReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
-        get() = WidgetSmallRow()
+        get() = WidgetSmallRowComponent()
 
     override fun onUpdate(
         context: Context,

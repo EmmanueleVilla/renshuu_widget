@@ -12,27 +12,27 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetTheme
+import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 import com.shadowings.renshuuwidget.widget.WidgetRefreshWorker
-import com.shadowings.renshuuwidget.widget.WidgetSmallRow
+import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
 import com.shadowings.renshuuwidget.widget.refreshWidget
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+private const val REPEAT_TIME = 15L
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            RenshuuWidgetTheme {
+            RenshuuWidgetThemeComponent {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    mainComponent()
+                    MainComponent()
                 }
             }
         }
@@ -47,12 +47,12 @@ class MainActivity : ComponentActivity() {
             "widget refresh",
             ExistingPeriodicWorkPolicy.UPDATE,
             PeriodicWorkRequest
-                .Builder(WidgetRefreshWorker::class.java, 15L, TimeUnit.MINUTES)
+                .Builder(WidgetRefreshWorker::class.java, REPEAT_TIME, TimeUnit.MINUTES)
                 .build()
         )
 
         MainScope().launch {
-            GlanceAppWidgetManager(this@MainActivity).getGlanceIds(WidgetSmallRow::class.java)
+            GlanceAppWidgetManager(this@MainActivity).getGlanceIds(WidgetSmallRowComponent::class.java)
                 .forEach { id ->
                     refreshWidget(this@MainActivity, id)
                 }

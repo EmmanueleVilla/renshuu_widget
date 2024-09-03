@@ -11,7 +11,7 @@ class UpdateWidgetReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         MainScope().launch {
             listOf(
-                WidgetSmallRow::class.java,
+                WidgetSmallRowComponent::class.java,
             ).forEach {
                 GlanceAppWidgetManager(context).getGlanceIds(it).forEach { id ->
                     refreshWidget(context, id)

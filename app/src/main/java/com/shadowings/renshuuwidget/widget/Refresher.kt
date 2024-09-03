@@ -29,7 +29,7 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
                                     this[widgetKey] = Gson().toJson(it)
                                 }
                         }
-                        WidgetSmallRow().update(context, glanceId)
+                        WidgetSmallRowComponent().update(context, glanceId)
                     }
                 }
             }

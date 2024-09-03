@@ -1,6 +1,13 @@
+style:
+  WildcardImport:
+    active: false
+  MagicNumber:
+    excludes:
+      - "**/Color.kt"
 naming:
   FunctionNaming:
     active: true
     functionPattern: '[a-z][a-zA-Z0-9]*'
     excludes:
       - "**/*Component.kt"
+      - "**/*Theme.kt"

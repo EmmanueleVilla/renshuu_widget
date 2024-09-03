@@ -35,23 +35,23 @@ import com.shadowings.renshuuwidget.main.widgetKey
 /**
  * Single row widget
  */
-class WidgetSmallRow : GlanceAppWidget() {
+class WidgetSmallRowComponent : GlanceAppWidget() {
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
-            Content()
+            ContentComponent()
         }
     }
 
     @Composable
-    fun Content() {
+    fun ContentComponent() {
         val prefs = currentState<Preferences>()
         val json = prefs[widgetKey] ?: ""
-        Report(json)
+        ReportComponent(json)
     }
 
     @Composable
-    fun Report(json: String?) {
+    fun ReportComponent(json: String?) {
         val deserialized = Gson().fromJson(json, ScheduleData::class.java)
         LazyColumn(
             modifier = GlanceModifier
