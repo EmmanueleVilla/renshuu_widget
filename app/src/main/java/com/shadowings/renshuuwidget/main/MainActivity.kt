@@ -13,9 +13,9 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
-import com.shadowings.renshuuwidget.widget.WidgetRefreshWorker
+import com.shadowings.renshuuwidget.refresh.WidgetRefreshWorker
 import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
-import com.shadowings.renshuuwidget.widget.refreshWidget
+import com.shadowings.renshuuwidget.refresh.refreshWidget
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
