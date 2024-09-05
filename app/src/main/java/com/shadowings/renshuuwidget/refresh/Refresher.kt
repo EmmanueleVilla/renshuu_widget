@@ -1,4 +1,4 @@
-package com.shadowings.renshuuwidget.widget
+package com.shadowings.renshuuwidget.refresh
 
 import android.content.Context
 import android.util.Log
@@ -8,6 +8,7 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import com.google.gson.Gson
 import com.shadowings.renshuuwidget.main.fetchSchedule
 import com.shadowings.renshuuwidget.main.widgetKey
+import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
