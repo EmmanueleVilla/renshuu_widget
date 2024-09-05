@@ -1,12 +1,10 @@
 # Renshuu Widget for Android
 
-Welcome to the **Renshuu Widget for Android** repository! This project is an open-source Android application that leverages the Renshuu API to populate a widget with useful Japanese language study information directly on your home screen.
-Whether you're actively studying Japanese or just want a convenient way to review vocabulary and kanji, this widget brings Renshuu's learning power to your Android device.
+Welcome to the **Renshuu Widget for Android** repository! This project is an open-source Android application that leverages the Renshuu API to populate a widget that shows your Renshuu mastery schedules directly on your home screen.
 
 ## Table of Contents
 
 - [Features](#features)
-- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -16,23 +14,18 @@ Whether you're actively studying Japanese or just want a convenient way to revie
 
 ## Features
 
-- **Interactive Widget**: Displays daily vocabulary, kanji, and grammar points directly on your home screen.
-- **Customizable Settings**: Choose what kind of content to display in the widget (vocabulary, kanji, grammar).
-- **Automatic Updates**: The widget updates automatically every 15 minutes.
+- **Interactive Widget**: Displays your mastery schedules and open the Renshuu official application on click.
+- **Automatic Updates**: The widget updates automatically every 15 minutes and when you open the companion app.
 - **Lightweight and Fast**: Designed to be efficient and easy to use without draining battery life.
-
-## Screenshots
-
-*(Include screenshots of your widget and app in use here)*
 
 ## Installation
 
 ### Prerequisites
 
-- An Android device running Android 5.0 (Lollipop) or higher.
+- An Android device running Android 7.0 or higher.
 - A Renshuu API Key (You can obtain this from your Renshuu account settings).
 
-### Steps
+#### From source
 
 1. **Clone the repository:**
 
@@ -50,6 +43,10 @@ Whether you're actively studying Japanese or just want a convenient way to revie
 
    - Connect your Android device or use an emulator.
    - Click "Run" in Android Studio to install the app on your device.
+  
+#### From the play store
+
+Navigate to [the play store page](https://play.google.com/store/apps/details?id=com.shadowings.renshuuwidget) and install it!
 
 ## Usage
 
@@ -58,13 +55,13 @@ Whether you're actively studying Japanese or just want a convenient way to revie
    - Find the "Renshuu Widget" in the list and drag it to your home screen.
 
 2. **Configure the Widget**:
-   - Tap on the widget to open the settings.
-   - Enter your Renshuu API key when prompted.
-   - Choose the type of content you want to display (Vocabulary, Kanji, Grammar).
-   - Save your settings, and the widget will update automatically.
+   - Tap the app icon to open it. Note that if you press the widget to open the Renshuu app, pressing the Widget app icon may lead you to the Renshuu app instead. In this case, you need to kill both apps and re-open the widget app.
+   - Enter your Renshuu API key and press save.
+   - The widget will update automatically.
+   - If you have troubles with the widget updates, follow the instruction in the app to remove it from battery optimizations.
 
 3. **Enjoy!**:
-   - Your widget will now show relevant study content from your Renshuu account. Tap on any item to view more details.
+   - Your widget will now show your mastery schedules! Tap any of them to open the app.
 
 ## Contributing
 
@@ -92,4 +89,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For any questions, suggestions, or feedback, feel free to reach out via:
 
 - **Email**: emmanuele.villa89@gmail.com
-- **GitHub Issues**: [GitHub Issues](https://github.com/yourusername/renshuu_widget/issues)
+- **GitHub Issues**: [GitHub Issues](https://github.com/EmmanueleVilla/renshuu_widget/issues)
