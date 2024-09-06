@@ -8,14 +8,17 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import com.google.gson.Gson
 import com.shadowings.renshuuwidget.main.fetchSchedule
 import com.shadowings.renshuuwidget.main.widgetKey
+import com.shadowings.renshuuwidget.utils.logIfDebug
 import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 fun refreshWidget(context: Context, glanceId: GlanceId) {
     MainScope().launch {
+        logIfDebug("[WidgetRefreshWorker] refreshing widget: $glanceId")
         val prefs = context.getSharedPreferences("RWPrefs", Context.MODE_PRIVATE)
         prefs.getString("api_key", null)?.let { key ->
+            logIfDebug("[WidgetRefreshWorker] fetching schedule for widget: $glanceId")
             fetchSchedule(context, key) {
                 if (it != null) {
                     Log.e("VECNA", Gson().toJson(it))

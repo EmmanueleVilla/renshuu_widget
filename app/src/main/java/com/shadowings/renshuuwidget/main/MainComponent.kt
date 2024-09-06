@@ -52,23 +52,25 @@ import com.shadowings.renshuuwidget.ui.theme.GrammarColor
 import com.shadowings.renshuuwidget.ui.theme.KanjiColor
 import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 import com.shadowings.renshuuwidget.ui.theme.VocabularyColor
+import com.shadowings.renshuuwidget.utils.logIfDebug
 import java.util.Date
 
 const val URL = "https://api.renshuu.org/v1/schedule"
 
 fun fetchSchedule(context: Context, token: String, callback: (ScheduleData?) -> Unit) {
+    logIfDebug("fetchSchedule")
     val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
     val jsonObjectRequest = object : JsonObjectRequest(
         Method.GET, URL, null,
         Response.Listener { response ->
-            Log.e("RESPONSE", response.toString())
+            logIfDebug("Response: $response")
             val gson = Gson()
             val data: ScheduleData = gson.fromJson(response.toString(), ScheduleData::class.java)
             callback(data)
         },
         Response.ErrorListener { error ->
-            error.printStackTrace()
+            logIfDebug("Error: $error")
             callback(null)
         }
     ) {

@@ -5,10 +5,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.shadowings.renshuuwidget.utils.logIfDebug
+import kotlin.math.log
 
 
 class ScreenOnReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        logIfDebug("[ScreenOnReceiver] received intent: ${intent.action}")
         if (Intent.ACTION_SCREEN_ON == intent.action) {
             if (shouldRunWork(context)) {
                 scheduleWork(context)
@@ -23,14 +26,16 @@ class ScreenOnReceiver : BroadcastReceiver() {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val lastRunTime = prefs.getLong(LAST_RUN_TIME, 0)
         val currentTime = System.currentTimeMillis()
-
-        return (currentTime - lastRunTime) > FIFTEEN_MINUTES
+        val shouldRun = (currentTime - lastRunTime) > FIFTEEN_MINUTES
+        logIfDebug("[ScreenOnReceiver] shouldRunWork: $shouldRun")
+        return shouldRun
     }
 
     /**
      * Schedules a work request to refresh the widget.
      */
     private fun scheduleWork(context: Context) {
+        logIfDebug("[ScreenOnReceiver] scheduling work")
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putLong(LAST_RUN_TIME, System.currentTimeMillis())
