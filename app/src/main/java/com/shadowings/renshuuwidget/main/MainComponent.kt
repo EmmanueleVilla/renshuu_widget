@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -31,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -125,17 +129,26 @@ private fun MainComponentBody(
     schedulesData: MutableState<ScheduleData?>,
     prefs: SharedPreferences,
 ) {
+    val scrollBehavior =
+        TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
     Scaffold(
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .fillMaxSize(),
         topBar = {
-            CenterAlignedTopAppBar(title = {
-                Text(text = "RENSHUU WIDGET")
-            })
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = "RENSHUU WIDGET")
+                },
+                scrollBehavior = scrollBehavior
+            )
         }
     ) { padding ->
         Column(
             Modifier
                 .padding(padding)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -169,7 +182,7 @@ private fun MainComponentBodyContent(
         style = MaterialTheme.typography.headlineMedium
     )
 
-    listOf(R.string.tutorial_1, R.string.tutorial_2, R.string.tutorial_3, R.string.tutorial_4).forEach {
+    listOf(R.string.tutorial_1, R.string.tutorial_2, R.string.tutorial_3).forEach {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             text = stringResource(it)
