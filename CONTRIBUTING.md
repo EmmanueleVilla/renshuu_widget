@@ -4,17 +4,12 @@ Thank you for considering contributing to the **Renshuu Widget for Android** pro
 
 ## Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
 - [How to Contribute](#how-to-contribute)
 - [Reporting Issues](#reporting-issues)
 - [Suggesting Enhancements](#suggesting-enhancements)
 - [Pull Requests](#pull-requests)
 - [Running Detekt](#running-detekt)
 - [Style Guide](#style-guide)
-
-## Code of Conduct
-
-This project follows a [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive environment. Please read it before contributing.
 
 ## How to Contribute
 
