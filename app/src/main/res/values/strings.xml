@@ -4,7 +4,7 @@
     <string name="tutorial_1">Renshuu Widget is a companion app to renshuu.org, a language learning platform. It allows you to see your dashboard progress on your home screen.</string>
     <string name="tutorial_2">To function, this app needs an API key from renshuu.org</string>
     <string name="tutorial_3">The API Key can be found under the experimental panel of renshuu\'s settings (tap menu, then the settings icon, then search for \"api\")</string>
-    <string name="tutorial_4">After the setup, the app will fetch your dashboard data every 15 minutes!</string>
     <string name="prefs_key">RWPrefs</string>
     <string name="blocked_tip"><![CDATA[The widget is not updating? You may need to exclude the app from battery optimization or enable autostart.\n\nCheck the following app\'s settings:\n1. Settings->Battery & perfomance -> App battery saver -> Select Renshuu Widget -> No restrictions\n2. Settings -> Apps -> Permissions -> Autostart -> Add Renshuu Widget to autostart]]></string>
+    <string name="git_contribute">Do you want to contribute to the project? Click here!</string>
 </resources>
