@@ -176,6 +176,8 @@ private fun MainComponentBodyContent(
     val keyBeginning = key.value?.substring(KEY_MASK_START, KEY_MASK_SIZE) ?: ""
     val keyEnd = key.value?.substring(key.value?.length?.minus(KEY_MASK_SIZE) ?: KEY_MASK_START) ?: ""
 
+    val context = LocalContext.current
+
     Text(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         text = stringResource(R.string.setup),
@@ -223,6 +225,20 @@ private fun MainComponentBodyContent(
         text = message.value
     )
     ScheduleDataComponent(schedulesData)
+
+    Button(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        onClick = {
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
+            intent.data = android.net.Uri.parse("https://github.com/EmmanueleVilla/renshuu_widget")
+            context.startActivity(intent)
+        }
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = "Do you want to contribute to the project? Please visit the GitHub repository."
+        )
+    }
 }
 
 @Composable
