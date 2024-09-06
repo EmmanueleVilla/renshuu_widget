@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.volley.RequestQueue
@@ -176,8 +177,6 @@ private fun MainComponentBodyContent(
     val keyBeginning = key.value?.substring(KEY_MASK_START, KEY_MASK_SIZE) ?: ""
     val keyEnd = key.value?.substring(key.value?.length?.minus(KEY_MASK_SIZE) ?: KEY_MASK_START) ?: ""
 
-    val context = LocalContext.current
-
     Text(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         text = stringResource(R.string.setup),
@@ -226,6 +225,14 @@ private fun MainComponentBodyContent(
     )
     ScheduleDataComponent(schedulesData)
 
+    GithubButton()
+}
+
+@Composable
+private fun GithubButton() {
+
+    val context = LocalContext.current
+
     Button(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         onClick = {
@@ -236,7 +243,8 @@ private fun MainComponentBodyContent(
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = "Do you want to contribute to the project? Please visit the GitHub repository."
+            text = stringResource(R.string.git_contribute),
+            textAlign = TextAlign.Center
         )
     }
 }
