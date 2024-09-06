@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,7 +96,7 @@ fun MainComponent() {
     val context = LocalContext.current
     val text = rememberSaveable { mutableStateOf("") }
     val message = rememberSaveable { mutableStateOf("") }
-    val schedulesData = rememberSaveable {
+    val schedulesData = remember {
         mutableStateOf<ScheduleData?>(null)
     }
     val prefs = context.getSharedPreferences(stringResource(R.string.prefs_key), Context.MODE_PRIVATE)
