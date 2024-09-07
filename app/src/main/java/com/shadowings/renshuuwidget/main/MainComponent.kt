@@ -66,7 +66,8 @@ fun fetchSchedule(context: Context, token: String, callback: (ScheduleData?) -> 
         Response.Listener { response ->
             logIfDebug("Response: $response")
             val gson = Gson()
-            val data: ScheduleData = gson.fromJson(response.toString(), ScheduleData::class.java)
+            val data: ScheduleData =
+                gson.fromJson(response.toString(), ScheduleData::class.java)
             callback(data)
         },
         Response.ErrorListener { error ->
@@ -77,7 +78,6 @@ fun fetchSchedule(context: Context, token: String, callback: (ScheduleData?) -> 
         override fun getHeaders(): MutableMap<String, String> {
             val headers = HashMap<String, String>()
             headers["Authorization"] = "Bearer $token"
-            Log.e("BEARER", "Bearer $token")
             return headers
         }
     }
@@ -109,13 +109,13 @@ fun MainComponent() {
     }
 
     LaunchedEffect(key.value) {
-        prefs.getString("api_key", null)?.let {
-            fetchSchedule(context, it) { data ->
-                schedulesData.value = data
-                message.value = if (data != null) {
-                    "Refresh ok ${Date()}"
-                } else {
-                    "Failed to fetch schedule data"
+        prefs.getString("api_key", null)?.let { key ->
+            fetchSchedule(context, key) { data ->
+                data?.let {
+                    schedulesData.value = it
+                    message.value = "Refresh ok ${Date()}"
+                } ?: run {
+                    message.value = "Failed to fetch schedule data"
                 }
             }
         }
