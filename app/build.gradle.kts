@@ -14,7 +14,7 @@ android {
         applicationId = "com.shadowings.renshuuwidget"
         minSdk = 24
         targetSdk = 34
-        versionCode = 20240907
+        versionCode = 20240908
         versionName = "0.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
