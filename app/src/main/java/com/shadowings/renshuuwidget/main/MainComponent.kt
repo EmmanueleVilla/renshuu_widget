@@ -65,15 +65,10 @@ fun fetchSchedule(context: Context, token: String, callback: (ScheduleData?) -> 
         Method.GET, URL, null,
         Response.Listener { response ->
             logIfDebug("Response: $response")
-            try {
-                val gson = Gson()
-                val data: ScheduleData =
-                    gson.fromJson(response.toString(), ScheduleData::class.java)
-                callback(data)
-            } catch (e: Exception) {
-                logIfDebug("Error: $e")
-                callback(null)
-            }
+            val gson = Gson()
+            val data: ScheduleData =
+                gson.fromJson(response.toString(), ScheduleData::class.java)
+            callback(data)
         },
         Response.ErrorListener { error ->
             logIfDebug("Error: $error")
