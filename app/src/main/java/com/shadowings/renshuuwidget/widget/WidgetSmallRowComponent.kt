@@ -54,12 +54,7 @@ class WidgetSmallRowComponent : GlanceAppWidget() {
 fun ContentComponent() {
     val prefs = currentState<Preferences>()
     val json = prefs[widgetKey] ?: ""
-    val theme = try {
-        prefs[themeKey]?.toInt() ?: 0
-    } catch (e: NumberFormatException) {
-        logIfDebug("ContentComponent: $e")
-        0
-    }
+    val theme = prefs[themeKey]?.toIntOrNull() ?: 0
     ReportComponent(json, theme)
 }
 

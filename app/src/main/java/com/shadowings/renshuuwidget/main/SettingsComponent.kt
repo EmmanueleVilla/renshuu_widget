@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -40,7 +41,6 @@ import com.shadowings.renshuuwidget.refresh.refreshWidget
 import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 import com.shadowings.renshuuwidget.utils.logIfDebug
 import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 @PreviewLightDark
@@ -57,6 +57,7 @@ fun SettingsComponentPreview() {
 @Composable
 fun SettingsComponent() {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Column(
         Modifier.fillMaxSize()
@@ -89,8 +90,8 @@ fun SettingsComponent() {
                     onClick = {
                         logIfDebug("selected theme: $index")
                         itemPosition.intValue = index
-                        prefs.edit().putInt("selected_theme", index).apply()
-                        MainScope().launch {
+                        prefs.edit().putInt(selectedThemeKey, index).apply()
+                        scope.launch {
                             GlanceAppWidgetManager(context).getGlanceIds(
                                 WidgetSmallRowComponent::class.java
                             )
