@@ -2,6 +2,7 @@ package com.shadowings.renshuuwidget.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,11 @@ internal const val REPEAT_TIME = 15L
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        onBackPressedDispatcher.addCallback {
+            finishAffinity()
+        }
+
         logIfDebug("onCreate")
         setContent {
             RenshuuWidgetThemeComponent {
@@ -64,3 +70,4 @@ class MainActivity : ComponentActivity() {
 }
 
 internal val widgetKey = stringPreferencesKey("widget-key")
+internal val themeKey = stringPreferencesKey("theme-key")

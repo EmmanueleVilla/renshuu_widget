@@ -2,7 +2,6 @@ package com.shadowings.renshuuwidget.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
 import androidx.glance.GlanceId
@@ -28,10 +27,15 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import com.google.gson.Gson
+import com.shadowings.renshuuwidget.main.MainActivity
 import com.shadowings.renshuuwidget.main.RenshuuBridgeActivity
+import com.shadowings.renshuuwidget.main.themeKey
+import com.shadowings.renshuuwidget.main.themes
 import com.shadowings.renshuuwidget.main.widgetKey
 import com.shadowings.renshuuwidget.models.ScheduleData
+import com.shadowings.renshuuwidget.utils.logIfDebug
 
 /**
  * Single row widget
@@ -49,16 +53,23 @@ class WidgetSmallRowComponent : GlanceAppWidget() {
 fun ContentComponent() {
     val prefs = currentState<Preferences>()
     val json = prefs[widgetKey] ?: ""
-    ReportComponent(json)
+    val theme = try {
+        prefs[themeKey]?.toInt() ?: 0
+    } catch (e: Exception) {
+        0
+    }
+    ReportComponent(json, theme)
 }
 
 @Composable
-fun ReportComponent(json: String?) {
+fun ReportComponent(json: String?, theme: Int) {
+    logIfDebug("Received theme index: $theme")
     val deserialized = Gson().fromJson(json, ScheduleData::class.java)
+    val themeIndex = theme % themes.size
     LazyColumn(
         modifier = GlanceModifier
             .fillMaxSize()
-            .background(Color.Gray),
+            .background(themes[themeIndex].backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         deserialized.schedules?.let { schedules ->
@@ -75,23 +86,41 @@ fun ReportComponent(json: String?) {
                         text = value.name,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = ColorProvider(themes[themeIndex].textColor)
                         )
                     )
                     Text(
                         text = "Learn: ${value.today.new} - Review: ${value.today.review}",
                         style = TextStyle(
                             fontStyle = FontStyle.Italic,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = ColorProvider(themes[themeIndex].textColor)
                         ),
                     )
-                    if (it < schedules.size - 1) {
-                        Row(
-                            GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
-                                .background(Color.DarkGray)
-                        ) {}
-                    }
+                    Row(
+                        GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
+                            .background(themes[themeIndex].textColor)
+                    ) {}
                 }
+            }
+        }
+        item {
+            Column(
+                modifier = GlanceModifier
+                    .fillMaxWidth()
+                    .padding(2.dp)
+                    .clickable(actionStartActivity(MainActivity::class.java)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Go to settings",
+                    style = TextStyle(
+                        fontStyle = FontStyle.Italic,
+                        textAlign = TextAlign.Center,
+                        color = ColorProvider(themes[themeIndex].textColor)
+                    ),
+                )
             }
         }
     }

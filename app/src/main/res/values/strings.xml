@@ -8,4 +8,5 @@
     <string name="prefs_key">RWPrefs</string>
     <string name="blocked_tip"><![CDATA[The widget is not updating? You may need to exclude the app from battery optimization or enable autostart.\n\nCheck the following app\'s settings:\n1. Settings->Battery & perfomance -> App battery saver -> Select Renshuu Widget -> No restrictions\n2. Settings -> Apps -> Permissions -> Autostart -> Add Renshuu Widget to autostart]]></string>
     <string name="git_contribute">Do you want to contribute to the project? Click here!</string>
+    <string name="selected_theme_key">selected_theme</string>
 </resources>

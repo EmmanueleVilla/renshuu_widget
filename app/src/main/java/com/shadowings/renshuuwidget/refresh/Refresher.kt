@@ -7,7 +7,9 @@ import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import com.google.gson.Gson
 import com.shadowings.renshuuwidget.BuildConfig
+import com.shadowings.renshuuwidget.R
 import com.shadowings.renshuuwidget.main.fetchSchedule
+import com.shadowings.renshuuwidget.main.themeKey
 import com.shadowings.renshuuwidget.main.widgetKey
 import com.shadowings.renshuuwidget.models.ApiUsage
 import com.shadowings.renshuuwidget.models.NewTerms
@@ -24,8 +26,13 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
     MainScope().launch {
         logIfDebug("[WidgetRefreshWorker] refreshing widget: $glanceId")
         val prefs = context.getSharedPreferences("RWPrefs", Context.MODE_PRIVATE)
+
         val cachedKey = prefs.getString("api_key", null)
+        val selectedThemeKey = context.getString(R.string.selected_theme_key)
+        val theme = prefs.getInt(selectedThemeKey, 0)
+
         logIfDebug("[WidgetRefreshWorker] api key: $cachedKey")
+        logIfDebug("[WidgetRefreshWorker] theme: $theme")
         cachedKey?.let { key ->
             logIfDebug("[WidgetRefreshWorker] fetching schedule for widget: $glanceId")
             fetchSchedule(context, key) {
@@ -40,6 +47,7 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
                             preferences.toMutablePreferences()
                                 .apply {
                                     this[widgetKey] = Gson().toJson(it)
+                                    this[themeKey] = theme.toString()
                                 }
                         }
                         WidgetSmallRowComponent().update(context, glanceId)
@@ -47,9 +55,7 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
                 }
             }
         } ?: run {
-            logIfDebug("Key is null")
             if (BuildConfig.DEBUG) {
-                logIfDebug("Updating in DEBUG mode")
                 updateAppWidgetState(
                     context = context,
                     definition = PreferencesGlanceStateDefinition,
@@ -57,6 +63,7 @@ fun refreshWidget(context: Context, glanceId: GlanceId) {
                 ) { preferences ->
                     preferences.toMutablePreferences()
                         .apply {
+                            this[themeKey] = theme.toString()
                             this[widgetKey] = Gson().toJson(
                                 ScheduleData(
                                     apiUsage = ApiUsage(
