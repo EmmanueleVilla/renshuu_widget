@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.shadowings.renshuuwidget.R
 
 @Composable
-fun GithubButton() {
+fun GithubButtonComponent() {
     val context = LocalContext.current
 
     Button(

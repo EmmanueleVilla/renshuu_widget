@@ -34,6 +34,7 @@ import com.shadowings.renshuuwidget.main.RenshuuBridgeActivity
 import com.shadowings.renshuuwidget.main.themeKey
 import com.shadowings.renshuuwidget.main.themes
 import com.shadowings.renshuuwidget.main.widgetKey
+import com.shadowings.renshuuwidget.models.Schedule
 import com.shadowings.renshuuwidget.models.ScheduleData
 import com.shadowings.renshuuwidget.utils.logIfDebug
 
@@ -55,7 +56,8 @@ fun ContentComponent() {
     val json = prefs[widgetKey] ?: ""
     val theme = try {
         prefs[themeKey]?.toInt() ?: 0
-    } catch (e: Exception) {
+    } catch (e: NumberFormatException) {
+        logIfDebug("ContentComponent: $e")
         0
     }
     ReportComponent(json, theme)
@@ -75,53 +77,64 @@ fun ReportComponent(json: String?, theme: Int) {
         deserialized.schedules?.let { schedules ->
             items(schedules.size) {
                 val value = schedules[it]
-                Column(
-                    modifier = GlanceModifier
-                        .fillMaxWidth()
-                        .padding(2.dp)
-                        .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = value.name,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            color = ColorProvider(themes[themeIndex].textColor)
-                        )
-                    )
-                    Text(
-                        text = "Learn: ${value.today.new} - Review: ${value.today.review}",
-                        style = TextStyle(
-                            fontStyle = FontStyle.Italic,
-                            textAlign = TextAlign.Center,
-                            color = ColorProvider(themes[themeIndex].textColor)
-                        ),
-                    )
-                    Row(
-                        GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
-                            .background(themes[themeIndex].textColor)
-                    ) {}
-                }
+                ScheduleItem(value, themeIndex)
             }
         }
         item {
-            Column(
-                modifier = GlanceModifier
-                    .fillMaxWidth()
-                    .padding(2.dp)
-                    .clickable(actionStartActivity(MainActivity::class.java)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = "Go to settings",
-                    style = TextStyle(
-                        fontStyle = FontStyle.Italic,
-                        textAlign = TextAlign.Center,
-                        color = ColorProvider(themes[themeIndex].textColor)
-                    ),
-                )
-            }
+            GoToSettings(themeIndex)
         }
+    }
+}
+
+@Composable
+fun ScheduleItem(value: Schedule, themeIndex: Int) {
+    Column(
+        modifier = GlanceModifier
+            .fillMaxWidth()
+            .padding(2.dp)
+            .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = value.name,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = ColorProvider(themes[themeIndex].textColor)
+            )
+        )
+        Text(
+            text = "Learn: ${value.today.new} - Review: ${value.today.review}",
+            style = TextStyle(
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Center,
+                color = ColorProvider(themes[themeIndex].textColor)
+            ),
+        )
+        Row(
+            GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
+                .background(themes[themeIndex].textColor)
+        ) {}
+    }
+}
+
+
+@Composable
+private fun GoToSettings(themeIndex: Int) {
+    Column(
+        modifier = GlanceModifier
+            .fillMaxWidth()
+            .padding(2.dp)
+            .clickable(actionStartActivity(MainActivity::class.java)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = "Go to settings",
+            style = TextStyle(
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Center,
+                color = ColorProvider(themes[themeIndex].textColor)
+            ),
+        )
     }
 }

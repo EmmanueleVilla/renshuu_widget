@@ -32,6 +32,6 @@ fun QAComponent() {
             text = stringResource(R.string.blocked_tip)
         )
         Spacer(Modifier.size(48.dp))
-        GithubButton()
+        GithubButtonComponent()
     }
 }

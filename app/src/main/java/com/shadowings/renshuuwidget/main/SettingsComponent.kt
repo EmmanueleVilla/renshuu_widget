@@ -18,9 +18,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,33 +56,24 @@ fun SettingsComponentPreview() {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsComponent() {
+    val context = LocalContext.current
+
     Column(
         Modifier.fillMaxSize()
     ) {
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .fillMaxWidth(),
-            text = "Choose the widget theme",
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center
-        )
+        SettingsTitle()
 
         val prefs =
-            LocalContext.current.getSharedPreferences(
-                stringResource(R.string.prefs_key),
-                Context.MODE_PRIVATE
+            context.getSharedPreferences(
+                stringResource(R.string.prefs_key), Context.MODE_PRIVATE
             )
 
         val selectedThemeKey = stringResource(R.string.selected_theme_key)
         val itemPosition = remember {
-            androidx.compose.runtime.mutableIntStateOf(
+            mutableIntStateOf(
                 prefs.getInt(selectedThemeKey, 0)
             )
         }
-
-        val context = LocalContext.current
-
         FlowRow(
             modifier = Modifier
                 .padding(8.dp)
@@ -115,51 +108,73 @@ fun SettingsComponent() {
                             )
                         }
                     },
-                    colors = InputChipDefaults.inputChipColors().copy(
-                        containerColor = theme.backgroundColor,
-                        selectedContainerColor = theme.backgroundColor,
-                        labelColor = theme.textColor,
-                        selectedLabelColor = theme.textColor,
-                        leadingIconColor = Color.Transparent,
-                        selectedLeadingIconColor = theme.textColor
-                    )
+                    colors = colorsFromTheme(theme)
                 )
             }
         }
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp)
-        ) {
-            Column(
-                Modifier
-                    .background(themes[itemPosition.intValue].backgroundColor)
-                    .padding(16.dp)
-            ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "The name of your schedule",
-                    textAlign = TextAlign.Center,
-                    color = themes[itemPosition.intValue].textColor,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
-                )
-                Spacer(Modifier.size(4.dp))
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "Learn: 25 - Review: 9999",
-                    textAlign = TextAlign.Center,
-                    color = themes[itemPosition.intValue].textColor,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontStyle = FontStyle.Italic,
-                        fontSize = 18.sp
-                    )
-                )
-            }
-        }
+        ThemePreview(themes, itemPosition.intValue)
         Spacer(Modifier.size(24.dp))
+    }
+}
+
+@Composable
+private fun colorsFromTheme(theme: Theme): SelectableChipColors {
+    return InputChipDefaults.inputChipColors().copy(
+        containerColor = theme.backgroundColor,
+        selectedContainerColor = theme.backgroundColor,
+        labelColor = theme.textColor,
+        selectedLabelColor = theme.textColor,
+        leadingIconColor = Color.Transparent,
+        selectedLeadingIconColor = theme.textColor
+    )
+}
+
+@Composable
+fun SettingsTitle() {
+    Text(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        text = "Choose the widget theme",
+        style = MaterialTheme.typography.headlineSmall,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun ThemePreview(themes: Array<Theme>, index: Int) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 32.dp, end = 32.dp)
+    ) {
+        Column(
+            Modifier
+                .background(themes[index].backgroundColor)
+                .padding(16.dp)
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "The name of your schedule",
+                textAlign = TextAlign.Center,
+                color = themes[index].textColor,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            )
+            Spacer(Modifier.size(4.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Learn: 25 - Review: 9999",
+                textAlign = TextAlign.Center,
+                color = themes[index].textColor,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 18.sp
+                )
+            )
+        }
     }
 }

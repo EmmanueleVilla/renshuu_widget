@@ -36,13 +36,13 @@ import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 @Composable
 fun MainContainerPreview() {
     RenshuuWidgetThemeComponent {
-        MainContainer()
+        MainContainerComponent()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContainer() {
+fun MainContainerComponent() {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("Setup", "Q&A", "Settings")
     val selectedIcons = listOf(Icons.Filled.Home, Icons.Filled.Info, Icons.Filled.Settings)
