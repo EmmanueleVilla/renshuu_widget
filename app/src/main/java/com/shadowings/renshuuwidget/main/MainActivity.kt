@@ -12,19 +12,21 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 import com.shadowings.renshuuwidget.refresh.WidgetRefreshWorker
-import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
 import com.shadowings.renshuuwidget.refresh.refreshWidget
+import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
+import com.shadowings.renshuuwidget.utils.logIfDebug
+import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-private const val REPEAT_TIME = 15L
+internal const val REPEAT_TIME = 15L
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        logIfDebug("onCreate")
         setContent {
             RenshuuWidgetThemeComponent {
                 // A surface container using the 'background' color from the theme
@@ -32,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainComponent()
+                    MainContainer()
                 }
             }
         }
@@ -41,6 +43,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
 
+        logIfDebug("onResume")
         val workManager = WorkManager.getInstance(applicationContext)
 
         workManager.enqueueUniquePeriodicWork(

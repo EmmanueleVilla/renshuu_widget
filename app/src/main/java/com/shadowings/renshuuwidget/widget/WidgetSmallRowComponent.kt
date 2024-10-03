@@ -26,11 +26,12 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontStyle
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
+import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.google.gson.Gson
 import com.shadowings.renshuuwidget.main.RenshuuBridgeActivity
-import com.shadowings.renshuuwidget.models.ScheduleData
 import com.shadowings.renshuuwidget.main.widgetKey
+import com.shadowings.renshuuwidget.models.ScheduleData
 
 /**
  * Single row widget
@@ -60,25 +61,36 @@ fun ReportComponent(json: String?) {
             .background(Color.Gray),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        items(deserialized.schedules.size) {
-            val value = deserialized.schedules[it]
-            Column(
-                modifier = GlanceModifier
-                    .fillMaxWidth()
-                    .padding(2.dp)
-                    .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(text = value.name, style = TextStyle(fontWeight = FontWeight.Bold))
-                Text(
-                    text = "Learn: ${value.today.new} - Review: ${value.today.review}",
-                    style = TextStyle(fontStyle = FontStyle.Italic)
-                )
-                if (it < deserialized.schedules.size - 1) {
-                    Row(
-                        GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
-                            .background(Color.DarkGray)
-                    ) {}
+        deserialized.schedules?.let { schedules ->
+            items(schedules.size) {
+                val value = schedules[it]
+                Column(
+                    modifier = GlanceModifier
+                        .fillMaxWidth()
+                        .padding(2.dp)
+                        .clickable(actionStartActivity(RenshuuBridgeActivity::class.java)),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = value.name,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                    Text(
+                        text = "Learn: ${value.today.new} - Review: ${value.today.review}",
+                        style = TextStyle(
+                            fontStyle = FontStyle.Italic,
+                            textAlign = TextAlign.Center
+                        ),
+                    )
+                    if (it < schedules.size - 1) {
+                        Row(
+                            GlanceModifier.fillMaxWidth().padding(2.dp).height(1.dp)
+                                .background(Color.DarkGray)
+                        ) {}
+                    }
                 }
             }
         }

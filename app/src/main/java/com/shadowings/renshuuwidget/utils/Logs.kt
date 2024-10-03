@@ -1,10 +1,10 @@
 package com.shadowings.renshuuwidget.utils
 
 import android.util.Log
-import com.android.volley.BuildConfig
+import com.shadowings.renshuuwidget.BuildConfig
 
 fun logIfDebug(message: String) {
     if (BuildConfig.DEBUG) {
-        Log.d("RenshuuWidget", message)
+        Log.d("VECNA", message)
     }
 }
