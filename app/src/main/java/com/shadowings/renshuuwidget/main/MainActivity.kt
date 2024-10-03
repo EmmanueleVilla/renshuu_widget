@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.lifecycle.lifecycleScope
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
@@ -18,13 +19,13 @@ import com.shadowings.renshuuwidget.refresh.refreshWidget
 import com.shadowings.renshuuwidget.ui.theme.RenshuuWidgetThemeComponent
 import com.shadowings.renshuuwidget.utils.logIfDebug
 import com.shadowings.renshuuwidget.widget.WidgetSmallRowComponent
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 internal const val REPEAT_TIME = 15L
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 .build()
         )
 
-        MainScope().launch {
+        lifecycleScope.launch {
             GlanceAppWidgetManager(this@MainActivity).getGlanceIds(WidgetSmallRowComponent::class.java)
                 .forEach { id ->
                     refreshWidget(this@MainActivity, id)
