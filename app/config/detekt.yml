@@ -6,6 +6,8 @@ style:
   MagicNumber:
     excludes:
       - "**/Color.kt"
+      - "**/Theme.kt"
+
 naming:
   FunctionNaming:
     active: true
@@ -13,6 +15,7 @@ naming:
     excludes:
       - "**/*Component.kt"
       - "**/*Theme.kt"
+
 compose:
   ReusedModifierInstance:
     active: true

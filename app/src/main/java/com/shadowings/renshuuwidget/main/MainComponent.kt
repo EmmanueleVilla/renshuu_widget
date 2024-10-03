@@ -2,9 +2,7 @@ package com.shadowings.renshuuwidget.main
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,19 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -35,10 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.volley.RequestQueue
@@ -89,7 +80,9 @@ fun fetchSchedule(context: Context, token: String, callback: (ScheduleData?) -> 
 @Composable
 private fun MainComponentPreview() {
     RenshuuWidgetThemeComponent {
-        MainComponent()
+        Surface {
+            MainComponent()
+        }
     }
 }
 
@@ -101,7 +94,8 @@ fun MainComponent() {
     val schedulesData = remember {
         mutableStateOf<ScheduleData?>(null)
     }
-    val prefs = context.getSharedPreferences(stringResource(R.string.prefs_key), Context.MODE_PRIVATE)
+    val prefs =
+        context.getSharedPreferences(stringResource(R.string.prefs_key), Context.MODE_PRIVATE)
     val key = rememberSaveable {
         mutableStateOf(
             prefs.getString("api_key", null)
@@ -121,7 +115,13 @@ fun MainComponent() {
         }
     }
 
-    MainComponentBody(key = key, text = text, message = message, schedulesData = schedulesData, prefs = prefs)
+    MainComponentBody(
+        key = key,
+        text = text,
+        message = message,
+        schedulesData = schedulesData,
+        prefs = prefs
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,124 +133,65 @@ private fun MainComponentBody(
     schedulesData: MutableState<ScheduleData?>,
     prefs: SharedPreferences,
 ) {
-    val scrollBehavior =
-        TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
-    Scaffold(
-        modifier = Modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
-            .fillMaxSize(),
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = "RENSHUU WIDGET")
-                },
-                scrollBehavior = scrollBehavior
-            )
-        }
-    ) { padding ->
-        Column(
-            Modifier
-                .padding(padding)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            MainComponentBodyContent(key, text, message, schedulesData, prefs)
-        }
-    }
-}
-
-private const val KEY_MASK_START = 0
-private const val KEY_MASK_SIZE = 6
-
-@Composable
-private fun MainComponentBodyContent(
-    key: MutableState<String?>,
-    text: MutableState<String>,
-    message: MutableState<String>,
-    schedulesData: MutableState<ScheduleData?>,
-    prefs: SharedPreferences,
-) {
     val isLoading = rememberSaveable {
         mutableStateOf(false)
     }
 
     val keyBeginning = key.value?.substring(KEY_MASK_START, KEY_MASK_SIZE) ?: ""
-    val keyEnd = key.value?.substring(key.value?.length?.minus(KEY_MASK_SIZE) ?: KEY_MASK_START) ?: ""
+    val keyEnd =
+        key.value?.substring(key.value?.length?.minus(KEY_MASK_SIZE) ?: KEY_MASK_START) ?: ""
 
-    Text(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        text = stringResource(R.string.setup),
-        style = MaterialTheme.typography.headlineMedium
-    )
-
-    listOf(R.string.tutorial_1, R.string.tutorial_2, R.string.tutorial_3).forEach {
-        Text(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = stringResource(it)
-        )
-    }
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        value = text.value,
-        onValueChange = { text.value = it },
-        label = { Text(text = "API Key") },
-        singleLine = true
-    )
-    Text(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        text = "Current key: $keyBeginning...$keyEnd"
-    )
-    SaveButton(isLoading = isLoading, key = key, text = text, prefs = prefs)
-
-    Text(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        text = stringResource(R.string.blocked_tip)
-    )
-
-    AnimatedVisibility(visible = isLoading.value) {
-        CircularProgressIndicator(
-            modifier = Modifier.width(64.dp),
-            color = MaterialTheme.colorScheme.secondary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-        )
-    }
-    AnimatedVisibility(visible = !isLoading.value) {
-        Spacer(modifier = Modifier.size(64.dp))
-    }
-    Text(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        text = message.value
-    )
-    ScheduleDataComponent(schedulesData)
-
-    GithubButton()
-}
-
-@Composable
-private fun GithubButton() {
-
-    val context = LocalContext.current
-
-    Button(
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        onClick = {
-            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
-            intent.data = android.net.Uri.parse("https://github.com/EmmanueleVilla/renshuu_widget")
-            context.startActivity(intent)
-        }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        listOf(
+            R.string.tutorial_1,
+            R.string.tutorial_2,
+            R.string.tutorial_3,
+            R.string.tutorial_4
+        ).forEach {
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                text = stringResource(it)
+            )
+        }
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            value = text.value,
+            onValueChange = { text.value = it },
+            label = { Text(text = "API Key") },
+            singleLine = true
+        )
         Text(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            text = stringResource(R.string.git_contribute),
-            textAlign = TextAlign.Center
+            text = "Current key: $keyBeginning...$keyEnd"
         )
+        SaveButton(isLoading = isLoading, key = key, text = text, prefs = prefs)
+
+        AnimatedVisibility(visible = isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+        }
+        AnimatedVisibility(visible = !isLoading.value) {
+            Spacer(modifier = Modifier.size(64.dp))
+        }
+        Text(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            text = message.value
+        )
+        ScheduleDataComponent(schedulesData)
     }
 }
+
+private const val KEY_MASK_START = 0
+private const val KEY_MASK_SIZE = 6
 
 @Composable
 private fun SaveButton(
@@ -280,7 +221,7 @@ private fun SaveButton(
 @Composable
 private fun ScheduleDataComponent(schedulesData: MutableState<ScheduleData?>) {
     schedulesData.value?.let {
-        it.schedules.forEach {
+        it.schedules?.forEach {
             ListItem(
                 leadingContent = {
                     Text(
