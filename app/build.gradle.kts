@@ -15,8 +15,8 @@ android {
         applicationId = "com.shadowings.renshuuwidget"
         minSdk = 24
         targetSdk = 34
-        versionCode = 20241003
-        versionName = "0.4.0"
+        versionCode = 20241007
+        versionName = "0.4.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
