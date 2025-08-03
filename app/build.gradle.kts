@@ -9,14 +9,14 @@ plugins {
 
 android {
     namespace = "com.shadowings.renshuuwidget"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.shadowings.renshuuwidget"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 20241007
-        versionName = "0.4.1"
+        targetSdk = 36
+        versionCode = 20250803
+        versionName = "0.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
